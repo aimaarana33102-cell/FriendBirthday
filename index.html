@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Ayesha! 🎂✨</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Canvas Confetti Library -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Great+Vibes&family=Quicksand:wght@400;500;600;700&family=Sacramento&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --font-main: 'Quicksand', sans-serif;
+            --font-heading: 'Fredoka', cursive;
+            --font-script: 'Sacramento', cursive;
+            --font-fancy: 'Great Vibes', cursive;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background: linear-gradient(135deg, #fce7f3 0%, #e9d5ff 50%, #cff4fc 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            touch-action: manipulation;
+        }
+
+        .font-heading { font-family: var(--font-heading); }
+        .font-script { font-family: var(--font-script); }
+        .font-fancy { font-family: var(--font-fancy); }
+
+        /* Glassmorphism Styles */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 10px 30px -5px rgba(236, 72, 153, 0.15),
+                        0 4px 15px -3px rgba(168, 85, 247, 0.15);
+        }
+
+        .glass-modal {
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.9);
+        }
+
+        /* Floating background particles */
+        .particle {
+            position: fixed;
+            pointer-events: none;
+            z-index: 0;
+            animation: floatUp 12s infinite linear;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(105vh) scale(0.8) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.8;
+            }
+            90% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(-10vh) scale(1.2) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Pulse animations */
+        @keyframes pulseGlow {
+            0%, 100% {
+                box-shadow: 0 0 20px rgba(244, 114, 182, 0.5), 0 0 40px rgba(192, 132, 252, 0.3);
+                transform: scale(1);
+            }
+            50% {
+                box-shadow: 0 0 30px rgba(244, 114, 182, 0.8), 0 0 60px rgba(192, 132, 252, 0.5);
+                transform: scale(1.03);
+            }
+        }
+
+        .glow-button {
+            animation: pulseGlow 3s infinite ease-in-out;
+        }
+
+        /* Flame animation for candles */
+        @keyframes flicker {
+            0%, 100% { transform: scale(1) rotate(-1deg); opacity: 0.95; }
+            25% { transform: scale(1.15) rotate(2deg); opacity: 1; }
+            50% { transform: scale(0.9) rotate(-2deg); opacity: 0.85; }
+            75% { transform: scale(1.08) rotate(1deg); opacity: 1; }
+        }
+
+        .flame {
+            animation: flicker 0.5s infinite ease-in-out;
+            transform-origin: center bottom;
+        }
+
+        .smoke {
+            animation: riseSmoke 1.5s forwards ease-out;
+        }
+
+        @keyframes riseSmoke {
+            0% { opacity: 0.9; transform: translateY(0) scale(0.6); }
+            100% { opacity: 0; transform: translateY(-50px) scale(2.2); }
+        }
+
+        /* Gift Box Lid Shake */
+        @keyframes shake {
+            0%, 100% { transform: rotate(0deg); }
+            20% { transform: rotate(-5deg); }
+            40% { transform: rotate(5deg); }
+            60% { transform: rotate(-3deg); }
+            80% { transform: rotate(3deg); }
+        }
+
+        .gift-box:hover .gift-lid {
+            animation: shake 0.5s ease-in-out infinite;
+        }
+
+        /* Custom Scrollbar for Letter Modal */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(253, 242, 248, 0.5);
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(244, 114, 182, 0.5);
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: rgba(244, 114, 182, 0.8);
+        }
+    </style>
+</head>
+<body class="relative flex flex-col min-h-screen text-slate-800 antialiased selection:bg-pink-200 selection:text-pink-800">
+
+    <div id="particle-container" class="fixed inset-0 pointer-events-none z-0 overflow-hidden"></div>
+
+    <header class="fixed top-0 left-0 right-0 z-40 p-4 flex justify-between items-center max-w-4xl mx-auto w-full pointer-events-none">
+        <!-- Floating Home Button -->
+        <button id="home-btn" onclick="goToMenu()" class="pointer-events-auto opacity-0 translate-y-[-20px] transition-all duration-500 bg-white/80 hover:bg-white text-pink-500 hover:text-pink-600 p-3 rounded-full shadow-lg border border-pink-100 flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-pink-300">
+            <i class="fa-solid fa-heart text-xl"></i>
+        </button>
+
+        <!-- Sound Toggle Button -->
+        <button id="music-btn" onclick="toggleAudio()" class="pointer-events-auto bg-white/80 hover:bg-white text-purple-600 p-3 rounded-full shadow-lg border border-purple-100 flex items-center justify-center space-x-2 px-4 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-purple-300">
+            <i id="music-icon" class="fa-solid fa-music"></i>
+            <span id="music-text" class="text-xs font-semibold text-purple-700 hidden sm:inline">Music: Off</span>
+        </button>
+    </header>
+
+    <main class="relative z-10 flex-grow flex flex-col justify-center items-center px-4 py-12">
+
+        <!-- ================= 1. OPENING SCREEN ================= -->
+        <section id="screen-welcome" class="w-full max-w-lg text-center transition-all duration-700 transform flex flex-col items-center">
+            <div class="glass-card p-8 sm:p-12 rounded-3xl shadow-xl w-full flex flex-col items-center space-y-6">
+                <!-- Animated Gift Icon -->
+                <div class="relative w-24 h-24 mb-2 flex items-center justify-center">
+                    <div class="absolute inset-0 bg-pink-300/40 rounded-full blur-xl animate-pulse"></div>
+                    <div class="relative text-6xl text-pink-500 transform hover:scale-110 transition-transform duration-300">
+                        🎁
+                    </div>
+                </div>
+
+                <h1 class="text-2xl sm:text-3xl font-bold font-heading text-slate-800 leading-relaxed">
+                    Hey! Someone has a little surprise for you... <span class="inline-block animate-bounce">💗</span>
+                </h1>
+
+                <p class="text-slate-600 text-sm sm:text-base max-w-xs mx-auto">
+                    A special journey made with lots of love just for today!
+                </p>
+
+                <button onclick="startSurprise()" class="glow-button w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-pink-400 via-purple-400 to-indigo-400 hover:from-pink-500 hover:via-purple-500 hover:to-indigo-500 text-white font-bold rounded-2xl shadow-lg transition-all duration-300 text-lg flex items-center justify-center space-x-3 transform active:scale-95">
+                    <span>Open Your Surprise</span>
+                    <i class="fa-solid fa-wand-magic-sparkles text-amber-200"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- ================= 2. MAIN MENU SCREEN ================= -->
+        <section id="screen-menu" class="hidden opacity-0 w-full max-w-xl transition-all duration-700 transform flex flex-col items-center space-y-6">
+            
+            <!-- Header Birthday Card -->
+            <div class="glass-card w-full p-6 sm:p-8 rounded-3xl text-center relative overflow-hidden">
+                <div class="absolute top-0 right-0 -mt-4 -mr-4 w-24 h-24 bg-pink-300/30 rounded-full blur-2xl"></div>
+                <div class="absolute bottom-0 left-0 -mb-4 -ml-4 w-24 h-24 bg-purple-300/30 rounded-full blur-2xl"></div>
+
+                <div class="inline-block px-4 py-1.5 bg-pink-100 text-pink-600 rounded-full text-xs font-semibold mb-3 tracking-wide">
+                    ✨ TODAY IS YOUR SPECIAL DAY ✨
+                </div>
+                
+                <h2 id="config-friend-heading" class="text-3xl sm:text-4xl font-bold font-heading text-slate-800">
+                    Happy Birthday, <span class="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-purple-600">Ayesha</span> 🎂💗
+                </h2>
+                
+                <p class="text-xs sm:text-sm text-slate-600 mt-2">
+                    Explore all 4 surprises below to complete your birthday journey!
+                </p>
+
+                <!-- Journey Progress Bar -->
+                <div class="mt-6 w-full">
+                    <div class="flex justify-between text-xs font-semibold text-slate-500 mb-1">
+                        <span>Birthday Journey Progress</span>
+                        <span id="progress-percent">0%</span>
+                    </div>
+                    <div class="w-full h-3 bg-pink-100/80 rounded-full overflow-hidden p-0.5 border border-pink-200">
+                        <div id="progress-bar" class="h-full bg-gradient-to-r from-pink-400 to-purple-500 rounded-full transition-all duration-500 w-0"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Interactive 4-Card Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
+                
+                <!-- Card 1: A Special Wish -->
+                <div onclick="openWishModal()" class="glass-card hover:bg-white/80 p-5 rounded-2xl cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-xl group relative overflow-hidden flex flex-col justify-between">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-12 h-12 rounded-xl bg-pink-100 text-pink-500 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
+                            💌
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-slate-800 group-hover:text-pink-600 transition-colors">A Special Wish</h3>
+                            <p class="text-xs text-slate-500">A letter for you</p>
+                        </div>
+                    </div>
+                    <div id="badge-wish" class="self-end mt-2 opacity-0 transition-opacity">
+                        <span class="text-[10px] bg-emerald-100 text-emerald-600 font-bold px-2 py-0.5 rounded-full flex items-center space-x-1">
+                            <i class="fa-solid fa-check text-[8px]"></i> <span>Opened</span>
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Card 2: Your Surprise -->
+                <div onclick="openGiftModal()" class="glass-card hover:bg-white/80 p-5 rounded-2xl cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-xl group relative overflow-hidden flex flex-col justify-between">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-12 h-12 rounded-xl bg-purple-100 text-purple-500 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
+                            🎁
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-slate-800 group-hover:text-purple-600 transition-colors">Your Surprise</h3>
+                            <p class="text-xs text-slate-500">Unwrap gift box</p>
+                        </div>
+                    </div>
+                    <div id="badge-gift" class="self-end mt-2 opacity-0 transition-opacity">
+                        <span class="text-[10px] bg-emerald-100 text-emerald-600 font-bold px-2 py-0.5 rounded-full flex items-center space-x-1">
+                            <i class="fa-solid fa-check text-[8px]"></i> <span>Opened</span>
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Card 3: A Little Message -->
+                <div onclick="openMessageModal()" class="glass-card hover:bg-white/80 p-5 rounded-2xl cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-xl group relative overflow-hidden flex flex-col justify-between">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-12 h-12 rounded-xl bg-rose-100 text-rose-500 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
+                            💖
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-slate-800 group-hover:text-rose-600 transition-colors">A Little Message</h3>
+                            <p class="text-xs text-slate-500">Personal note</p>
+                        </div>
+                    </div>
+                    <div id="badge-msg" class="self-end mt-2 opacity-0 transition-opacity">
+                        <span class="text-[10px] bg-emerald-100 text-emerald-600 font-bold px-2 py-0.5 rounded-full flex items-center space-x-1">
+                            <i class="fa-solid fa-check text-[8px]"></i> <span>Opened</span>
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Card 4: Make a Wish -->
+                <div onclick="openCakeModal()" class="glass-card hover:bg-white/80 p-5 rounded-2xl cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-xl group relative overflow-hidden flex flex-col justify-between">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-12 h-12 rounded-xl bg-amber-100 text-amber-500 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
+                            ✨
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-slate-800 group-hover:text-amber-600 transition-colors">Make a Wish</h3>
+                            <p class="text-xs text-slate-500">Blow the candles</p>
+                        </div>
+                    </div>
+                    <div id="badge-cake" class="self-end mt-2 opacity-0 transition-opacity">
+                        <span class="text-[10px] bg-emerald-100 text-emerald-600 font-bold px-2 py-0.5 rounded-full flex items-center space-x-1">
+                            <i class="fa-solid fa-check text-[8px]"></i> <span>Opened</span>
+                        </span>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Final Screen Button -->
+            <button id="final-surprise-btn" onclick="goToFinalScreen()" class="hidden opacity-0 w-full py-4 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 hover:from-pink-600 hover:to-indigo-600 text-white font-bold rounded-2xl shadow-xl transition-all duration-500 text-lg flex items-center justify-center space-x-2 animate-bounce">
+                <span>Go to Final Celebration 🎉</span>
+            </button>
+        </section>
+
+        <!-- ================= 3. MODALS FOR SURPRISES ================= -->
+
+        <!-- MODAL 1: A Special Wish (Animated Letter) -->
+        <div id="modal-wish" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300">
+            <div class="glass-modal w-full max-w-lg rounded-3xl p-6 sm:p-8 shadow-2xl relative flex flex-col max-h-[85vh] transform scale-95 transition-transform duration-300">
+                <button onclick="closeModal('modal-wish')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 p-2 rounded-full hover:bg-slate-100 transition-colors">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+
+                <div class="flex items-center space-x-3 mb-4">
+                    <span class="text-3xl">💌</span>
+                    <h3 class="text-xl font-bold font-heading text-slate-800">A Special Birthday Wish</h3>
+                </div>
+
+                <div class="flex-grow overflow-y-auto custom-scrollbar p-4 bg-amber-50/60 border border-amber-100/80 rounded-2xl mb-6">
+                    <p id="typed-letter" class="font-script text-2xl text-slate-700 leading-relaxed whitespace-pre-line"></p>
+                </div>
+
+                <button onclick="closeModal('modal-wish')" class="w-full py-3 bg-pink-500 hover:bg-pink-600 text-white font-semibold rounded-xl shadow-md transition-colors">
+                    Close Letter 💗
+                </button>
+            </div>
+        </div>
+
+        <!-- MODAL 2: Your Surprise (Animated Gift Box) -->
+        <div id="modal-gift" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300">
+            <div class="glass-modal w-full max-w-md rounded-3xl p-6 sm:p-8 shadow-2xl relative flex flex-col items-center text-center transform scale-95 transition-transform duration-300">
+                <button onclick="closeModal('modal-gift')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 p-2 rounded-full hover:bg-slate-100 transition-colors">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+
+                <h3 class="text-xl font-bold font-heading text-slate-800 mb-1">Your Surprise Gift 🎁</h3>
+                <p id="gift-subtitle" class="text-xs text-slate-500 mb-6">Tap the box to reveal what's inside!</p>
+
+                <!-- Interactive Animated SVG Gift Box -->
+                <div id="gift-box-container" onclick="openGiftBox()" class="gift-box cursor-pointer my-4 relative group">
+                    <div id="gift-glow" class="absolute -inset-4 bg-pink-300/50 rounded-full blur-xl group-hover:bg-pink-400/70 transition-all opacity-0"></div>
+                    
+                    <svg width="150" height="150" viewBox="0 0 100 100" class="relative z-10 drop-shadow-xl transition-transform duration-300 group-hover:scale-105">
+                        <rect x="20" y="40" width="60" height="50" rx="4" fill="#f472b6" />
+                        <rect x="44" y="40" width="12" height="50" fill="#fbbf24" />
+                        
+                        <g id="gift-lid" class="gift-lid transition-transform duration-500 origin-bottom">
+                            <rect x="15" y="28" width="70" height="15" rx="3" fill="#f43f5e" />
+                            <rect x="44" y="28" width="12" height="15" fill="#f59e0b" />
+                            <path d="M 35 28 C 30 15, 45 15, 50 28 C 55 15, 70 15, 65 28 Z" fill="#fbbf24" />
+                        </g>
+                    </svg>
+                </div>
+
+                <!-- Revealed Surprise Content -->
+                <div id="gift-message" class="hidden opacity-0 transition-all duration-500 mt-4 p-5 bg-gradient-to-r from-pink-100 to-purple-100 rounded-2xl border border-pink-200">
+                    <p id="config-gift-text" class="text-slate-800 font-semibold text-sm sm:text-base leading-relaxed">
+                        Surprise! 🎉<br>You deserve all the happiness in the world.<br>Keep smiling and keep being amazing! 💗
+                    </p>
+                </div>
+
+                <button id="gift-close-btn" onclick="closeModal('modal-gift')" class="mt-6 w-full py-3 bg-purple-500 hover:bg-purple-600 text-white font-semibold rounded-xl shadow-md transition-colors">
+                    Close 💗
+                </button>
+            </div>
+        </div>
+
+        <!-- MODAL 3: A Little Message -->
+        <div id="modal-message" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300">
+            <div class="glass-modal w-full max-w-md rounded-3xl p-6 sm:p-8 shadow-2xl relative flex flex-col items-center transform scale-95 transition-transform duration-300">
+                <button onclick="closeModal('modal-message')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 p-2 rounded-full hover:bg-slate-100 transition-colors">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+
+                <div class="flex items-center space-x-2 mb-6">
+                    <span class="text-2xl">💖</span>
+                    <h3 class="text-xl font-bold font-heading text-slate-800">A Personal Note</h3>
+                </div>
+
+                <!-- Handwritten Card Style -->
+                <div class="relative w-full bg-amber-50 p-6 rounded-xl border border-amber-200 shadow-md transform -rotate-1 mb-6">
+                    <div class="absolute -top-3 left-1/2 -translate-x-1/2 w-24 h-6 bg-pink-200/80 backdrop-blur-xs border border-pink-300/50 transform rotate-1 shadow-sm"></div>
+
+                    <p id="msg-short" class="font-fancy text-2xl text-slate-700 leading-snug">
+                        "To a truly wonderful friend, here is a quick note to remind you how deeply appreciated you are..."
+                    </p>
+
+                    <p id="msg-full" class="hidden opacity-0 font-fancy text-2xl text-slate-700 leading-snug mt-4 pt-4 border-t border-amber-200 transition-all duration-500">
+                    </p>
+
+                    <button id="read-more-btn" onclick="expandMessage()" class="mt-4 px-4 py-2 bg-pink-400 hover:bg-pink-500 text-white font-sans text-xs font-bold rounded-lg transition-all shadow-sm flex items-center space-x-1 mx-auto">
+                        <span>Read More 💌</span>
+                    </button>
+                </div>
+
+                <button onclick="closeModal('modal-message')" class="w-full py-3 bg-rose-500 hover:bg-rose-600 text-white font-semibold rounded-xl shadow-md transition-colors">
+                    Back to Menu 💗
+                </button>
+            </div>
+        </div>
+
+        <!-- MODAL 4: Make a Wish (FIXED & FULLY WORKING MODAL) -->
+        <div id="modal-cake" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300">
+            <div class="glass-modal w-full max-w-md rounded-3xl p-6 sm:p-8 shadow-2xl relative flex flex-col items-center text-center transform scale-95 transition-transform duration-300">
+                <button onclick="closeModal('modal-cake')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 p-2 rounded-full hover:bg-slate-100 transition-colors">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+
+                <h3 class="text-xl font-bold font-heading text-slate-800 mb-1">Make a Birthday Wish ✨</h3>
+                <p id="cake-instruction" class="text-xs sm:text-sm text-slate-600 mb-6">
+                    Close your eyes, make a wish... and tap the candles to blow them out! 🕯️✨
+                </p>
+
+                <!-- Syemmetrical, Straight & Centered Animated Cake -->
+                <div id="cake-container" onclick="blowCandles()" class="cursor-pointer relative my-4 flex flex-col items-center group select-none">
+                    
+                    <!-- Glow effect around cake -->
+                    <div id="cake-glow" class="absolute inset-0 bg-amber-200/40 rounded-full blur-2xl group-hover:bg-pink-300/60 transition-all"></div>
+
+                    <!-- Candle Flames Container -->
+                    <div id="candles" class="flex justify-center space-x-6 z-20 mb-[-2px]">
+                        <!-- Candle 1 -->
+                        <div class="relative flex flex-col items-center">
+                            <div class="flame-element flame w-3.5 h-5 bg-gradient-to-t from-amber-500 via-orange-400 to-yellow-200 rounded-full shadow-[0_0_12px_#f59e0b]"></div>
+                            <div class="w-2 h-9 bg-gradient-to-b from-pink-300 via-pink-400 to-pink-500 rounded-t-sm shadow-sm border-x border-pink-200"></div>
+                        </div>
+                        <!-- Candle 2 (Center) -->
+                        <div class="relative flex flex-col items-center -mt-1">
+                            <div class="flame-element flame w-4 h-6 bg-gradient-to-t from-amber-500 via-orange-400 to-yellow-200 rounded-full shadow-[0_0_14px_#f59e0b]"></div>
+                            <div class="w-2.5 h-10 bg-gradient-to-b from-purple-300 via-purple-400 to-purple-500 rounded-t-sm shadow-sm border-x border-purple-200"></div>
+                        </div>
+                        <!-- Candle 3 -->
+                        <div class="relative flex flex-col items-center">
+                            <div class="flame-element flame w-3.5 h-5 bg-gradient-to-t from-amber-500 via-orange-400 to-yellow-200 rounded-full shadow-[0_0_12px_#f59e0b]"></div>
+                            <div class="w-2 h-9 bg-gradient-to-b from-blue-300 via-blue-400 to-blue-500 rounded-t-sm shadow-sm border-x border-blue-200"></div>
+                        </div>
+                    </div>
+
+                    <!-- Perfectly Aligned Cake Layers (SVG/Flex Layout) -->
+                    <div class="relative z-10 flex flex-col items-center">
+                        <!-- Top Frosting Decorative Ribbon -->
+                        <div class="w-36 h-3 bg-pink-100/90 rounded-t-full border-t-2 border-pink-200 shadow-sm z-20"></div>
+
+                        <!-- Top Tier -->
+                        <div class="w-40 h-12 bg-gradient-to-b from-pink-300 to-pink-400 rounded-t-xl border-b-4 border-pink-500/30 relative flex items-center justify-around px-3 shadow-inner">
+                            <span class="text-xs drop-shadow-sm">🌸</span>
+                            <span class="text-xs drop-shadow-sm">💖</span>
+                            <span class="text-xs drop-shadow-sm">🌸</span>
+                        </div>
+
+                        <!-- Middle Cream Layer -->
+                        <div class="w-48 h-3 bg-amber-100 rounded-full my-[-2px] z-20 shadow-sm border-x border-amber-200"></div>
+
+                        <!-- Bottom Tier -->
+                        <div class="w-52 h-16 bg-gradient-to-b from-purple-300 via-purple-400 to-purple-500 rounded-t-2xl border-b-4 border-purple-600/30 relative flex items-center justify-around px-4 shadow-md">
+                            <span class="text-sm drop-shadow-sm">✨</span>
+                            <span class="text-sm drop-shadow-sm">👑</span>
+                            <span class="text-sm drop-shadow-sm">✨</span>
+                            <span class="text-sm drop-shadow-sm">👑</span>
+                        </div>
+
+                        <!-- Cake Base Plate -->
+                        <div class="w-64 h-4 bg-gradient-to-r from-slate-200 via-slate-100 to-slate-200 rounded-full shadow-lg border-b border-slate-300 -mt-1 flex items-center justify-center">
+                            <div class="w-56 h-1 bg-slate-300/50 rounded-full"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Post-Wish Message -->
+                <div id="wish-outcome" class="hidden opacity-0 transition-all duration-500 mt-4 space-y-4">
+                    <p class="text-lg font-bold font-heading text-pink-600">
+                        May your wish come true! 💖✨
+                    </p>
+                    
+                    <button onclick="goToFinalScreen()" class="glow-button px-6 py-3 bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white font-bold rounded-xl shadow-lg transition-all text-sm flex items-center justify-center space-x-2 mx-auto">
+                        <span>One Last Surprise 🎁</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+
+                <button id="cake-close-btn" onclick="closeModal('modal-cake')" class="mt-6 w-full py-3 bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold rounded-xl transition-colors">
+                    Close 💗
+                </button>
+            </div>
+        </div>
+
+        <!-- ================= 4. FINAL SURPRISE SCREEN ================= -->
+        <section id="screen-final" class="hidden opacity-0 w-full max-w-xl transition-all duration-700 transform flex flex-col items-center text-center">
+            <div class="glass-card p-8 sm:p-12 rounded-3xl shadow-2xl w-full relative overflow-hidden flex flex-col items-center space-y-6">
+                
+                <div class="text-6xl animate-bounce mb-2">🎉🎂💖</div>
+
+                <h2 id="config-final-title" class="text-3xl sm:text-5xl font-extrabold font-heading text-slate-800 leading-tight">
+                    Happy Birthday, <span class="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500">Ayesha</span>! 🎂💗
+                </h2>
+
+                <div class="w-16 h-1 bg-gradient-to-r from-pink-400 to-purple-400 rounded-full"></div>
+
+                <p id="config-final-message" class="text-slate-700 text-base sm:text-lg leading-relaxed max-w-md font-medium">
+                    Today is your day, so smile a little extra, laugh a little louder and make some beautiful memories. ✨
+                </p>
+
+                <div class="pt-4 w-full">
+                    <button onclick="replayJourney()" class="w-full sm:w-auto px-8 py-4 bg-white hover:bg-pink-50 text-pink-600 border-2 border-pink-300 font-bold rounded-2xl shadow-md transition-all text-base flex items-center justify-center space-x-2 mx-auto transform active:scale-95">
+                        <i class="fa-solid fa-rotate-left"></i>
+                        <span>Replay the Surprise 🔄</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        /* ==========================================================================
+           1. CONFIGURATION (EASILY EDITABLE FOR PERSONALIZATION)
+           ========================================================================== */
+        const CONFIG = {
+            friendName: "Ayesha",
+
+            wishLetter: `Happy Birthday to one of the most special people in my life! 💗
+
+I hope this new year of your life brings you countless reasons to smile, beautiful memories, success, happiness and everything your heart wishes for.
+
+Thank you for being such an amazing friend. Some people enter our lives and simply make everything a little brighter — you are one of those people.
+
+May your day be as beautiful and special as you are. ✨
+
+Happy Birthday once again! 🎂💖`,
+
+            giftSurpriseText: `Surprise! 🎉
+You deserve all the happiness in the world.
+Keep smiling and keep being amazing! 💗`,
+
+            shortNotePreview: `"To a truly wonderful best friend..."`,
+            fullNoteContent: `Thank you for all the quiet laughter, the uncounted favors, and the beautiful warmth you bring into every conversation. Having you as a best friend is a gift I cherish every day. Wishing you a year filled with magic! ✨💗`,
+
+            finalMessage: `Today is your day, so smile a little extra, laugh a little louder and make some beautiful memories. ✨`
+        };
+
+        /* ==========================================================================
+           2. STATE & HAPPY BIRTHDAY MUSIC SYNTHESIZER
+           ========================================================================== */
+        let audioContext = null;
+        let isMusicPlaying = false;
+        let musicTimer = null;
+        let currentNoteStep = 0;
+
+        const state = {
+            openedWish: false,
+            openedGift: false,
+            openedMsg: false,
+            openedCake: false
+        };
+
+        // Upbeat Happy Birthday Melodic Sheet (Frequencies in Hz & Beat Durations)
+        const HAPPY_BIRTHDAY_MELODY = [
+            // Line 1: Happy Birthday to You
+            { freq: 261.63, duration: 0.35 }, { freq: 261.63, duration: 0.2 }, { freq: 293.66, duration: 0.5 },
+            { freq: 261.63, duration: 0.5 },  { freq: 349.23, duration: 0.5 }, { freq: 329.63, duration: 0.9 },
+            
+            // Line 2: Happy Birthday to You
+            { freq: 261.63, duration: 0.35 }, { freq: 261.63, duration: 0.2 }, { freq: 293.66, duration: 0.5 },
+            { freq: 261.63, duration: 0.5 },  { freq: 392.00, duration: 0.5 }, { freq: 349.23, duration: 0.9 },
+
+            // Line 3: Happy Birthday Dear Friend
+            { freq: 261.63, duration: 0.35 }, { freq: 261.63, duration: 0.2 }, { freq: 523.25, duration: 0.5 },
+            { freq: 440.00, duration: 0.5 },  { freq: 349.23, duration: 0.5 }, { freq: 329.63, duration: 0.5 }, { freq: 293.66, duration: 0.8 },
+
+            // Line 4: Happy Birthday to You!
+            { freq: 466.16, duration: 0.35 }, { freq: 466.16, duration: 0.2 }, { freq: 440.00, duration: 0.5 },
+            { freq: 349.23, duration: 0.5 },  { freq: 392.00, duration: 0.5 }, { freq: 349.23, duration: 1.1 }
+        ];
+
+        window.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('#config-friend-heading, #config-final-title').forEach(el => {
+                el.innerHTML = `Happy Birthday, <span class="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-purple-600">${CONFIG.friendName}</span> 🎂💗`;
+            });
+
+            document.getElementById('config-gift-text').innerHTML = CONFIG.giftSurpriseText.replace(/\n/g, '<br>');
+            document.getElementById('msg-short').innerText = CONFIG.shortNotePreview;
+            document.getElementById('msg-full').innerText = CONFIG.fullNoteContent;
+            document.getElementById('config-final-message').innerText = CONFIG.finalMessage;
+
+            createFloatingParticles();
+        });
+
+        function initAudioContext() {
+            if (!audioContext) {
+                const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+                audioContext = new AudioContextClass();
+            }
+            if (audioContext.state === 'suspended') {
+                audioContext.resume();
+            }
+        }
+
+        // Play Upbeat Polyphonic Happy Birthday Note
+        function playHappyNote() {
+            if (!isMusicPlaying || !audioContext) return;
+
+            const noteData = HAPPY_BIRTHDAY_MELODY[currentNoteStep];
+            const now = audioContext.currentTime;
+
+            try {
+                // Main Melody Lead Synth
+                const osc = audioContext.createOscillator();
+                const gain = audioContext.createGain();
+                
+                osc.type = 'triangle'; // Bright warm lead
+                osc.frequency.setValueAtTime(noteData.freq, now);
+
+                gain.gain.setValueAtTime(0, now);
+                gain.gain.linearRampToValueAtTime(0.15, now + 0.05);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + noteData.duration);
+
+                osc.connect(gain);
+                gain.connect(audioContext.destination);
+
+                osc.start(now);
+                osc.stop(now + noteData.duration);
+
+                // Secondary Warm Bass Chord Harmony
+                const bassOsc = audioContext.createOscillator();
+                const bassGain = audioContext.createGain();
+                
+                bassOsc.type = 'sine';
+                bassOsc.frequency.setValueAtTime(noteData.freq / 2, now); // 1 octave down
+
+                bassGain.gain.setValueAtTime(0, now);
+                bassGain.gain.linearRampToValueAtTime(0.08, now + 0.05);
+                bassGain.gain.exponentialRampToValueAtTime(0.001, now + noteData.duration);
+
+                bassOsc.connect(bassGain);
+                bassGain.connect(audioContext.destination);
+
+                bassOsc.start(now);
+                bassOsc.stop(now + noteData.duration);
+
+            } catch (e) {
+                console.log("Audio error:", e);
+            }
+
+            // Next Note Schedule
+            const delay = noteData.duration * 1000 + 60; // Upbeat rhythm gap
+            currentNoteStep = (currentNoteStep + 1) % HAPPY_BIRTHDAY_MELODY.length;
+            
+            musicTimer = setTimeout(playHappyNote, delay);
+        }
+
+        function toggleAudio() {
+            initAudioContext();
+            isMusicPlaying = !isMusicPlaying;
+
+            const btnText = document.getElementById('music-text');
+            const btnIcon = document.getElementById('music-icon');
+
+            if (isMusicPlaying) {
+                btnText.innerText = "Music: On";
+                btnIcon.className = "fa-solid fa-volume-high text-pink-500 animate-pulse";
+                if (musicTimer) clearTimeout(musicTimer);
+                playHappyNote();
+                playSoundEffect(523.25, 'sine', 0.2);
+            } else {
+                btnText.innerText = "Music: Off";
+                btnIcon.className = "fa-solid fa-music";
+                if (musicTimer) clearTimeout(musicTimer);
+            }
+        }
+
+        function playSoundEffect(freq, type = 'sine', duration = 0.3) {
+            try {
+                initAudioContext();
+                if (!audioContext) return;
+                const osc = audioContext.createOscillator();
+                const gain = audioContext.createGain();
+                
+                osc.type = type;
+                osc.frequency.setValueAtTime(freq, audioContext.currentTime);
+                
+                gain.gain.setValueAtTime(0.1, audioContext.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + duration);
+
+                osc.connect(gain);
+                gain.connect(audioContext.destination);
+
+                osc.start();
+                osc.stop(audioContext.currentTime + duration);
+            } catch(e) {}
+        }
+
+        /* ==========================================================================
+           3. NAVIGATION & SCREEN TRANSITIONS
+           ========================================================================== */
+        function startSurprise() {
+            initAudioContext();
+            
+            if (!isMusicPlaying) {
+                isMusicPlaying = true;
+                const btnText = document.getElementById('music-text');
+                const btnIcon = document.getElementById('music-icon');
+                if (btnText && btnIcon) {
+                    btnText.innerText = "Music: On";
+                    btnIcon.className = "fa-solid fa-volume-high text-pink-500 animate-pulse";
+                }
+                playHappyNote();
+            }
+
+            playSoundEffect(587.33, 'triangle', 0.4);
+            triggerConfettiBurst(0.3);
+
+            const welcome = document.getElementById('screen-welcome');
+            const menu = document.getElementById('screen-menu');
+            const homeBtn = document.getElementById('home-btn');
+
+            welcome.classList.add('opacity-0', 'scale-95');
+            setTimeout(() => {
+                welcome.classList.add('hidden');
+                menu.classList.remove('hidden');
+                
+                setTimeout(() => {
+                    menu.classList.remove('opacity-0');
+                    homeBtn.classList.remove('opacity-0', 'translate-y-[-20px]');
+                }, 50);
+            }, 500);
+        }
+
+        function goToMenu() {
+            playSoundEffect(440, 'sine', 0.2);
+            
+            closeModal('modal-wish');
+            closeModal('modal-gift');
+            closeModal('modal-message');
+            closeModal('modal-cake');
+
+            const finalScreen = document.getElementById('screen-final');
+            const menu = document.getElementById('screen-menu');
+
+            if (!finalScreen.classList.contains('hidden')) {
+                finalScreen.classList.add('opacity-0', 'scale-95');
+                setTimeout(() => {
+                    finalScreen.classList.add('hidden');
+                    menu.classList.remove('hidden');
+                    setTimeout(() => menu.classList.remove('opacity-0'), 50);
+                }, 500);
+            }
+        }
+
+        function updateProgress() {
+            const count = Object.values(state).filter(Boolean).length;
+            const percentage = Math.round((count / 4) * 100);
+
+            document.getElementById('progress-bar').style.width = `${percentage}%`;
+            document.getElementById('progress-percent').innerText = `${percentage}%`;
+
+            if (count === 4) {
+                const finalBtn = document.getElementById('final-surprise-btn');
+                finalBtn.classList.remove('hidden');
+                setTimeout(() => finalBtn.classList.remove('opacity-0'), 100);
+            }
+        }
+
+        /* ==========================================================================
+           4. SURPRISE MODALS LOGIC
+           ========================================================================== */
+        
+        // MODAL 1: LETTER
+        let typewriterTimeout = null;
+        function openWishModal() {
+            playSoundEffect(659.25, 'sine', 0.3);
+            state.openedWish = true;
+            document.getElementById('badge-wish').classList.remove('opacity-0');
+            updateProgress();
+
+            openModal('modal-wish');
+
+            const letterElement = document.getElementById('typed-letter');
+            letterElement.textContent = '';
+            let i = 0;
+            const text = CONFIG.wishLetter;
+
+            if (typewriterTimeout) clearTimeout(typewriterTimeout);
+
+            function typeChar() {
+                if (i < text.length) {
+                    letterElement.textContent += text.charAt(i);
+                    i++;
+                    typewriterTimeout = setTimeout(typeChar, 25);
+                }
+            }
+            setTimeout(typeChar, 300);
+        }
+
+        // MODAL 2: GIFT
+        let giftOpened = false;
+        function openGiftModal() {
+            playSoundEffect(659.25, 'sine', 0.3);
+            openModal('modal-gift');
+        }
+
+        function openGiftBox() {
+            if (giftOpened) return;
+            giftOpened = true;
+
+            state.openedGift = true;
+            document.getElementById('badge-gift').classList.remove('opacity-0');
+            updateProgress();
+
+            playSoundEffect(880, 'triangle', 0.5);
+            triggerConfettiBurst(0.6);
+
+            const lid = document.getElementById('gift-lid');
+            const glow = document.getElementById('gift-glow');
+            const message = document.getElementById('gift-message');
+            const subtitle = document.getElementById('gift-subtitle');
+
+            lid.style.transform = 'translateY(-30px) rotate(-15deg)';
+            glow.classList.remove('opacity-0');
+            subtitle.innerText = "You unlocked the surprise!";
+
+            setTimeout(() => {
+                message.classList.remove('hidden');
+                setTimeout(() => message.classList.remove('opacity-0'), 50);
+            }, 300);
+        }
+
+        // MODAL 3: MESSAGE
+        function openMessageModal() {
+            playSoundEffect(659.25, 'sine', 0.3);
+            state.openedMsg = true;
+            document.getElementById('badge-msg').classList.remove('opacity-0');
+            updateProgress();
+
+            openModal('modal-message');
+        }
+
+        function expandMessage() {
+            playSoundEffect(523.25, 'sine', 0.2);
+            const fullMsg = document.getElementById('msg-full');
+            const readBtn = document.getElementById('read-more-btn');
+
+            readBtn.classList.add('hidden');
+            fullMsg.classList.remove('hidden');
+            setTimeout(() => fullMsg.classList.remove('opacity-0'), 50);
+        }
+
+        // MODAL 4: CAKE
+        let candlesBlown = false;
+        function openCakeModal() {
+            playSoundEffect(659.25, 'sine', 0.3);
+            openModal('modal-cake');
+        }
+
+        function blowCandles() {
+            if (candlesBlown) return;
+            candlesBlown = true;
+
+            state.openedCake = true;
+            document.getElementById('badge-cake').classList.remove('opacity-0');
+            updateProgress();
+
+            playSoundEffect(300, 'sine', 0.4);
+
+            const flames = document.querySelectorAll('.flame-element');
+            flames.forEach(flame => {
+                flame.classList.remove('flame');
+                flame.classList.add('smoke');
+                setTimeout(() => flame.style.display = 'none', 1000);
+            });
+
+            document.getElementById('cake-instruction').innerText = "The flames went out! ✨";
+
+            setTimeout(() => {
+                triggerConfettiBurst(0.8);
+                playSoundEffect(783.99, 'sine', 0.5);
+
+                const outcome = document.getElementById('wish-outcome');
+                outcome.classList.remove('hidden');
+                setTimeout(() => outcome.classList.remove('opacity-0'), 50);
+            }, 500);
+        }
+
+        // Modal Helper Functions
+        function openModal(id) {
+            const modal = document.getElementById(id);
+            modal.classList.remove('pointer-events-none');
+            modal.classList.remove('opacity-0');
+            modal.firstElementChild.classList.remove('scale-95');
+            modal.firstElementChild.classList.add('scale-100');
+        }
+
+        function closeModal(id) {
+            const modal = document.getElementById(id);
+            modal.firstElementChild.classList.remove('scale-100');
+            modal.firstElementChild.classList.add('scale-95');
+            modal.classList.add('opacity-0');
+            setTimeout(() => {
+                modal.classList.add('pointer-events-none');
+            }, 300);
+        }
+
+        /* ==========================================================================
+           5. FINAL CELEBRATION
+           ========================================================================== */
+        function goToFinalScreen() {
+            closeModal('modal-cake');
+            playSoundEffect(880, 'sine', 0.6);
+
+            const menu = document.getElementById('screen-menu');
+            const finalScreen = document.getElementById('screen-final');
+
+            menu.classList.add('opacity-0', 'scale-95');
+            setTimeout(() => {
+                menu.classList.add('hidden');
+                finalScreen.classList.remove('hidden');
+                
+                setTimeout(() => {
+                    finalScreen.classList.remove('opacity-0');
+                    triggerCelebrationConfetti();
+                }, 50);
+            }, 500);
+        }
+
+        function replayJourney() {
+            playSoundEffect(523.25, 'sine', 0.3);
+
+            state.openedWish = false;
+            state.openedGift = false;
+            state.openedMsg = false;
+            state.openedCake = false;
+
+            giftOpened = false;
+            candlesBlown = false;
+
+            document.querySelectorAll('[id^="badge-"]').forEach(el => el.classList.add('opacity-0'));
+            document.getElementById('progress-bar').style.width = '0%';
+            document.getElementById('progress-percent').innerText = '0%';
+            document.getElementById('final-surprise-btn').classList.add('hidden', 'opacity-0');
+
+            const lid = document.getElementById('gift-lid');
+            if (lid) lid.style.transform = 'none';
+            document.getElementById('gift-message').classList.add('hidden', 'opacity-0');
+
+            const flames = document.querySelectorAll('.flame-element');
+            flames.forEach(flame => {
+                flame.style.display = 'block';
+                flame.classList.remove('smoke');
+                flame.classList.add('flame');
+            });
+            document.getElementById('wish-outcome').classList.add('hidden', 'opacity-0');
+
+            const finalScreen = document.getElementById('screen-final');
+            const welcome = document.getElementById('screen-welcome');
+            const homeBtn = document.getElementById('home-btn');
+
+            homeBtn.classList.add('opacity-0', 'translate-y-[-20px]');
+            finalScreen.classList.add('opacity-0');
+            
+            setTimeout(() => {
+                finalScreen.classList.add('hidden');
+                welcome.classList.remove('hidden', 'scale-95', 'opacity-0');
+            }, 500);
+        }
+
+        /* ==========================================================================
+           6. VISUAL EFFECTS & CONFETTI
+           ========================================================================== */
+        function createFloatingParticles() {
+            const container = document.getElementById('particle-container');
+            const symbols = ['💗', '✨', '⭐', '🎈', '🌸', '💖'];
+            
+            for (let i = 0; i < 20; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle text-lg sm:text-2xl select-none';
+                particle.innerText = symbols[Math.floor(Math.random() * symbols.length)];
+                
+                particle.style.left = `${Math.random() * 100}vw`;
+                particle.style.animationDuration = `${8 + Math.random() * 8}s`;
+                particle.style.animationDelay = `${Math.random() * 5}s`;
+                
+                container.appendChild(particle);
+            }
+        }
+
+        function triggerConfettiBurst(intensity = 0.5) {
+            if (typeof confetti === 'function') {
+                confetti({
+                    particleCount: Math.floor(60 * intensity),
+                    spread: 70,
+                    origin: { y: 0.6 },
+                    colors: ['#f472b6', '#c084fc', '#38bdf8', '#fbbf24']
+                });
+            }
+        }
+
+        function triggerCelebrationConfetti() {
+            if (typeof confetti !== 'function') return;
+
+            const duration = 3 * 1000;
+            const end = Date.now() + duration;
+
+            (function frame() {
+                confetti({
+                    particleCount: 3,
+                    angle: 60,
+                    spread: 55,
+                    origin: { x: 0 },
+                    colors: ['#f472b6', '#c084fc', '#fbbf24']
+                });
+                confetti({
+                    particleCount: 3,
+                    angle: 120,
+                    spread: 55,
+                    origin: { x: 1 },
+                    colors: ['#f472b6', '#c084fc', '#38bdf8']
+                });
+
+                if (Date.now() < end) {
+                    requestAnimationFrame(frame);
+                }
+            })();
+        }
+    </script>
+</body>
+</html>
